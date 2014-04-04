@@ -11,5 +11,6 @@ group :semantic_web do
   # rdf-rdfxml should be easier to install (pure ruby), but it wasn't working for me
   gem 'rdf-raptor'
   gem 'sparql'
+  gem 'hash-deep-merge'
   gem 'pry'
 end

@@ -6,17 +6,9 @@ Apache jclouds:
     in the cloud and reuse your Java development skills. Our API allows you to freedom
     to use portable abstractions or cloud-specific features.  We support many clouds
     including Amazon, Azure, Rackspace, and VMWare.
-  shortdesc: 
   download_page: https://github.com/jclouds/jclouds
-  license: 
-  bug_database: 
-  mailing_list: 
 pyrax:
   homepage: https://github.com/rackspace/pyrax
   programming_language: Python
   description: Python language bindings for the Rackspace Cloud.
-  shortdesc: 
   download_page: https://github.com/rackspace/pyrax/downloads
-  license: 
-  bug_database: 
-  mailing_list: 

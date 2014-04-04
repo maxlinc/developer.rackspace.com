@@ -2,14 +2,24 @@ require 'yaml'
 require 'rdf'
 require 'rdf/raptor'
 require 'sparql'
+require 'hash_deep_merge'
 
 # Hack!  Raptor needed and ruby doesn't find the lib after a homebrew install
 ENV['DYLD_LIBRARY_PATH'] = '/opt/boxen/homebrew/Cellar/raptor/2.0.13/lib'
 
 namespace :doap do
+  desc 'Clears the _data/sdks.yml file, so you can replace it with a completely generated one'
+  task :clobber do
+    File.open('site_source/_data/sdks.yml', 'wb') do |f|
+      f.write ''
+    end
+  end
+
   desc 'Builds the _data/sdks.yml file by fetching Description of A Project for each SDK from the semantic web'
   task :build_sdk_yml do
     converter = DOAPConverter.new
+    # keep custom fields and sdks that don't exist, data available in DOAP will be overwritten
+    converter.load_existing 'site_source/_data/sdks.yml'
     # PyPI also has DOAP, but it isn't very good (at least it wasn't for Pyrax)
     # PyPI url: https://pypi.python.org/pypi?:action=doap&name=pyrax
     converter.load "http://rdfohloh.wikier.org/project/pyrax.rdf"
@@ -21,15 +31,38 @@ end
 
 class DOAPConverter
   def initialize
-    @sdk_repo = RDF::Repository.new
+    @sdks = {}
+  end
+
+  def load_existing(file)
+    existing_data = YAML::load(File.read(file)) || {}
+    @sdks.deep_merge existing_data
   end
 
   def load(rdf_url)
-    @sdk_repo.load rdf_url
+    graph = RDF::Graph.load(rdf_url)
+    @sdks.deep_merge! sdk_from_rdf graph
   end
 
   def to_simple_yaml
-    sdks = {}
+    sorted_sdks = Hash[@sdks.sort]
+    YAML::dump(sorted_sdks)
+  end
+
+  def save_simple_yaml(file)
+    save file, to_simple_yaml
+  end
+
+  private
+  def save(file, content)
+    File.open(file, 'wb') do |f|
+      f.write content
+    end
+  end
+
+  def sdk_from_rdf(graph)
+    sdk = {}
+    sdk_name = nil
     optional_keys = %w{
       homepage programming-language description shortdesc download-page
       license bug-database mailing-list
@@ -48,33 +81,19 @@ class DOAPConverter
         #{optional_selectors}
       } ORDER BY ?programming_language
     )
-    query.execute(@sdk_repo) do |solution|
+    query.execute(graph) do |solution|
       sdk_name = solution['name'].value
-      sdk = {}
       # Use this instead of solution.each_binding to force the order
       optional_keys.each do |key|
         hash_key = key.gsub('-','_')
         begin
           value = solution[hash_key].value
+          sdk[hash_key] = value if value
         rescue => e
           $stderr.puts "Could not load #{key}... it probably has multiple values...."
-          value = nil
         end
-        sdk[hash_key] = value
       end
-      sdks[sdk_name] = sdk
     end
-    YAML::dump(sdks)
-  end
-
-  def save_simple_yaml(file)
-    save file, to_simple_yaml
-  end
-
-  private
-  def save(file, content)
-    File.open(file, 'wb') do |f|
-      f.write content
-    end
+    { sdk_name => sdk }
   end
 end
