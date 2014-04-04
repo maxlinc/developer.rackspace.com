@@ -17,37 +17,13 @@ title: Rackspace Developer Center
 
     <div class="bodyitem shieldboxes sixup">
         <ul class="shields clearfix">
-            <li class="java">
-                <a href="#java">
-                    <span class="title">Java</span>
+          {% for sdk in site.data.sdks %}
+            <li class="{{ sdk['programming_language'] }}">
+                <a href="#{{ sdk['programming_language'] }}">
+                    <span class="title">{{ sdk['programming_language'] }}</span>
                 </a>
             </li>
-            <li class="dotnet">
-                <a href="#dotnet">
-                    <span class="title">.NET</span>
-                </a>
-            </li>
-            <li class="node">
-                <a href="#node">
-                    <span class="title">node.js</span>
-                </a>
-            </li>
-            <li class="php">
-                <a href="#php">
-                    <span class="title">PHP</span>
-                </a>
-            </li>
-            <li class="python">
-                <a href="#python">
-                    <span class="title">Python</span>
-                </a>
-            </li>
-            <li class="ruby">
-                <a href="#ruby">
-                    <span class="title">Ruby</span>
-                </a>
-            </li>
-        </ul>
+          {% endfor %}
     </div>
 
             <a name="java"></a>
