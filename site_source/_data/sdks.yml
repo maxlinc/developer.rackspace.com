@@ -1,5 +1,5 @@
 ---
-- name: Apache jclouds
+Apache jclouds:
   homepage: http://jclouds.apache.org/
   programming_language: Java
   description: Apache jclouds is an open-source framework that helps you get started
@@ -11,7 +11,7 @@
   license: 
   bug_database: 
   mailing_list: 
-- name: pyrax
+pyrax:
   homepage: https://github.com/rackspace/pyrax
   programming_language: Python
   description: Python language bindings for the Rackspace Cloud.
@@ -20,15 +20,3 @@
   license: 
   bug_database: 
   mailing_list: 
-- name: Apache Libcloud
-  homepage: http://libcloud.apache.org
-  programming_language: Python
-  description: Apache Libcloud is a standard Python library that abstracts away differences
-    among multiple cloud provider APIs. It allows users to manage cloud servers, cloud
-    storage and load-balancers.
-  shortdesc: Apache Libcloud is a standard Python library that abstracts away differences
-    among multiple cloud provider APIs.
-  download_page: http://libcloud.apache.org/downloads.html
-  license: http://usefulinc.com/doap/licenses/asl20
-  bug_database: https://issues.apache.org/jira/browse/LIBCLOUD
-  mailing_list: http://libcloud.apache.org/devinfo.html

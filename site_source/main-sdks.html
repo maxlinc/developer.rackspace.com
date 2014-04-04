@@ -17,7 +17,9 @@ title: Rackspace Developer Center
 
     <div class="bodyitem shieldboxes sixup">
         <ul class="shields clearfix">
-          {% for sdk in site.data.sdks %}
+          {% for sdk_hash in site.data.sdks %}
+            {% assign sdk_name = sdk_hash[0] %}
+            {% assign sdk = sdk_hash[1] %}
             <li class="{{ sdk['programming_language'] }}">
                 <a href="#{{ sdk['programming_language'] }}">
                     <span class="title">{{ sdk['programming_language'] }}</span>
@@ -37,7 +39,7 @@ title: Rackspace Developer Center
         </div>
         <div class="col">
           <span class="colheader">Supported SDK</span>
-          <p><a href="{{ sdk['homepage'] }}">{{ sdk['name'] }}</a></p>
+          <p><a href="{{ sdk['homepage'] }}">{{ sdk_name }}</a></p>
         </div>
         <div class="col">
           <span class="colheader">Docs and Resources</span>

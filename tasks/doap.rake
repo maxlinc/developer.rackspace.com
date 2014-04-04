@@ -10,11 +10,11 @@ namespace :doap do
   desc 'Builds the _data/sdks.yml file by fetching Description of A Project for each SDK from the semantic web'
   task :build_sdk_yml do
     converter = DOAPConverter.new
+    # PyPI also has DOAP, but it isn't very good (at least it wasn't for Pyrax)
+    # PyPI url: https://pypi.python.org/pypi?:action=doap&name=pyrax
     converter.load "http://rdfohloh.wikier.org/project/pyrax.rdf"
-    # PyPI doesn't have programming_language
-    # converter.load "https://pypi.python.org/pypi?:action=doap&name=pyrax"
     converter.load "http://rdfohloh.wikier.org/project/jclouds.rdf"
-    converter.load "http://svn.apache.org/repos/asf/libcloud/trunk/doap_libcloud.rdf"
+    # converter.load "http://svn.apache.org/repos/asf/libcloud/trunk/doap_libcloud.rdf"
     converter.save_simple_yaml 'site_source/_data/sdks.yml'
   end
 end
@@ -29,11 +29,13 @@ class DOAPConverter
   end
 
   def to_simple_yaml
-    sdks = Set.new
+    sdks = {}
     optional_keys = %w{
       homepage programming-language description shortdesc download-page
       license bug-database mailing-list
     }
+    # removed keys that I have trouble parsing:
+    # repository, maintainer and category (which can cause duplicate results)
     optional_selectors = optional_keys.map{ |key|
       "OPTIONAL { ?project doap:#{key} ?#{key.gsub('-','_')} }"
     }.join("\n")
@@ -46,15 +48,11 @@ class DOAPConverter
         #{optional_selectors}
       } ORDER BY ?programming_language
     )
-    # Removed... I don't know how to deal w/ complex types
-    # OPTIONAL { ?project doap:repository ?repository . }
-    # OPTIONAL { ?project doap:maintainer ?maintainer . }
-    # Category is causing duplicate results (for libcloud)
-    # OPTIONAL { ?project doap:category ?category . }
     query.execute(@sdk_repo) do |solution|
+      sdk_name = solution['name'].value
       sdk = {}
       # Use this instead of solution.each_binding to force the order
-      (['name'] + optional_keys).each do |key|
+      optional_keys.each do |key|
         hash_key = key.gsub('-','_')
         begin
           value = solution[hash_key].value
@@ -64,10 +62,9 @@ class DOAPConverter
         end
         sdk[hash_key] = value
       end
-      sdks.add sdk
+      sdks[sdk_name] = sdk
     end
-    # sdks = sdks.sort_by {|k, v| k }
-    YAML::dump(sdks.to_a)
+    YAML::dump(sdks)
   end
 
   def save_simple_yaml(file)
