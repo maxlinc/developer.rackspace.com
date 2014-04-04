@@ -12,5 +12,6 @@ group :semantic_web do
   gem 'rdf-raptor'
   gem 'sparql'
   gem 'hash-deep-merge'
+  gem 'octokit'
   gem 'pry'
 end

@@ -28,7 +28,9 @@ title: Rackspace Developer Center
           {% endfor %}
     </div>
 
-    {% for sdk in site.data.sdks %}
+    {% for sdk_hash in site.data.sdks %}
+      {% assign sdk_name = sdk_hash[0] %}
+      {% assign sdk = sdk_hash[1] %}
     <a name="{{ sdk['programming_language'] }}"></a>
 
     <div class="bodyitem sdktable">
