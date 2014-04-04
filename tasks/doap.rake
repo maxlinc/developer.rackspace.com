@@ -1,4 +1,3 @@
-require 'json/ld'
 require 'yaml'
 require 'rdf'
 require 'rdf/raptor'
@@ -7,45 +6,26 @@ require 'sparql'
 # Hack!  Raptor needed and ruby doesn't find the lib after a homebrew install
 ENV['DYLD_LIBRARY_PATH'] = '/opt/boxen/homebrew/Cellar/raptor/2.0.13/lib'
 
-class DOAPConverter
-  include RDF
-  COMPACT_CONTEXT = JSON.parse %({
-  "@context": {
-    "dct": "http://purl.org/dc/terms/",
-    "doap": "http://usefulinc.com/ns/doap#",
-    "sioc": "http://rdfs.org/sioc/ns#",
-    "foaf": "http://xmlns.com/foaf/0.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "rdfohloh": "http://rdfohloh.wikier.org/ns#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "owl": "http://www.w3.org/2002/07/owl#",
-    "dc": "http://purl.org/dc/elements/1.1/",
-    "vcard": "http://www.w3.org/2001/vcard-rdf/3.0#"
-  }
-})
+namespace :doap do
+  desc 'Builds the _data/sdks.yml file by fetching Description of A Project for each SDK from the semantic web'
+  task :build_sdk_yml do
+    converter = DOAPConverter.new
+    converter.load "http://rdfohloh.wikier.org/project/pyrax.rdf"
+    # PyPI doesn't have programming_language
+    # converter.load "https://pypi.python.org/pypi?:action=doap&name=pyrax"
+    converter.load "http://rdfohloh.wikier.org/project/jclouds.rdf"
+    converter.load "http://svn.apache.org/repos/asf/libcloud/trunk/doap_libcloud.rdf"
+    converter.save_simple_yaml 'site_source/_data/sdks.yml'
+  end
+end
 
+class DOAPConverter
   def initialize
     @sdk_repo = RDF::Repository.new
   end
 
   def load(rdf_url)
     @sdk_repo.load rdf_url
-
-    # @graph = RDF::Reader.open(rdf_url) do |reader|
-    #   reader.each_statement do |statement|
-    #     puts statement.inspect
-    #   end
-    # end
-  end
-
-  def to_json_ld
-    compacted = nil
-    JSON::LD::API::fromRdf(@sdk_repo) do |expanded|
-      compacted = JSON::LD::API.compact(expanded, COMPACT_CONTEXT['@context'])
-    end
-    JSON.pretty_generate compacted['@graph']
   end
 
   def to_simple_yaml
@@ -90,10 +70,6 @@ class DOAPConverter
     YAML::dump(sdks.to_a)
   end
 
-  def save_json_ld(file)
-    save file, to_json_ld
-  end
-
   def save_simple_yaml(file)
     save file, to_simple_yaml
   end
@@ -105,11 +81,3 @@ class DOAPConverter
     end
   end
 end
-
-converter = DOAPConverter.new
-converter.load "http://rdfohloh.wikier.org/project/pyrax.rdf"
-# PyPI doesn't have programming_language
-# converter.load "https://pypi.python.org/pypi?:action=doap&name=pyrax"
-converter.load "http://rdfohloh.wikier.org/project/jclouds.rdf"
-converter.load "http://svn.apache.org/repos/asf/libcloud/trunk/doap_libcloud.rdf"
-converter.save_simple_yaml 'site_source/_data/sdks.yml'
