@@ -49,40 +49,45 @@ class DOAPConverter
   end
 
   def to_simple_yaml
-    sdks = []
+    sdks = Set.new
+    optional_keys = %w{
+      homepage programming-language description shortdesc download-page
+      license bug-database mailing-list
+    }
+    optional_selectors = optional_keys.map{ |key|
+      "OPTIONAL { ?project doap:#{key} ?#{key.gsub('-','_')} }"
+    }.join("\n")
     query = SPARQL.parse %(
       PREFIX doap: <http://usefulinc.com/ns/doap#>
-      select ?name ?homepage ?programming_language ?description ?shortdesc ?maintainer
-        ?download_page ?license ?category ?bug_database ?mailing_list ?repository
+      select distinct *
       WHERE {
-        ?x a doap:Project .
-        ?x doap:name ?name .
-        OPTIONAL { ?x doap:homepage ?homepage . }
-        OPTIONAL { ?x doap:programming-language ?programming_language . }
-        OPTIONAL { ?x doap:description ?description . }
-        OPTIONAL { ?x doap:shortdesc ?shortdesc . }
-        OPTIONAL { ?x doap:maintainer ?maintainer . }
-        OPTIONAL { ?x doap:download-page ?download_page . }
-        OPTIONAL { ?x doap:license ?license . }
-        OPTIONAL { ?x doap:category ?category . }
-        OPTIONAL { ?x doap:bug-database ?bug_database . }
-        OPTIONAL { ?x doap:mailing-list ?mailing_list . }
-        OPTIONAL { ?x doap:repository ?repository . }
-      }
+        ?project a doap:Project .
+        ?project doap:name ?name .
+        #{optional_selectors}
+      } ORDER BY ?programming_language
     )
+    # Removed... I don't know how to deal w/ complex types
+    # OPTIONAL { ?project doap:repository ?repository . }
+    # OPTIONAL { ?project doap:maintainer ?maintainer . }
+    # Category is causing duplicate results (for libcloud)
+    # OPTIONAL { ?project doap:category ?category . }
     query.execute(@sdk_repo) do |solution|
       sdk = {}
-      solution.each_binding { |name, value|
+      # Use this instead of solution.each_binding to force the order
+      (['name'] + optional_keys).each do |key|
+        hash_key = key.gsub('-','_')
         begin
-          puts "#{name} = #{value.value}"
-          sdk[name.to_s] = value.value
+          value = solution[hash_key].value
         rescue => e
-          $stderr.puts "Could not load #{name}... it probably has multiple values...."
+          $stderr.puts "Could not load #{key}... it probably has multiple values...."
+          value = nil
         end
-      }
-      sdks.push sdk
+        sdk[hash_key] = value
+      end
+      sdks.add sdk
     end
-    YAML::dump(sdks)
+    # sdks = sdks.sort_by {|k, v| k }
+    YAML::dump(sdks.to_a)
   end
 
   def save_json_ld(file)
@@ -102,10 +107,9 @@ class DOAPConverter
 end
 
 converter = DOAPConverter.new
-# converter.load "http://rdfohloh.wikier.org/project/pyrax.rdf"
-converter.load "https://pypi.python.org/pypi?:action=doap&name=pyrax"
+converter.load "http://rdfohloh.wikier.org/project/pyrax.rdf"
+# PyPI doesn't have programming_language
+# converter.load "https://pypi.python.org/pypi?:action=doap&name=pyrax"
 converter.load "http://rdfohloh.wikier.org/project/jclouds.rdf"
 converter.load "http://svn.apache.org/repos/asf/libcloud/trunk/doap_libcloud.rdf"
 converter.save_simple_yaml 'site_source/_data/sdks.yml'
-# converter.save_json_ld 'site_source/_data/sdks.json'
-

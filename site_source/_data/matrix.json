@@ -1,0 +1,487 @@
+{
+  "Getting Started": {
+    "data": {
+    },
+    "environment": null,
+    "services": null,
+    "markdown": "\n  Welcome to the SDK guide!\n\n  In this section, you will learn how to connect to OpenStack by authenticating against the [Identity service](http://docs.openstack.org/api/openstack-identity-service/2.0/content/).\n\n  By the end of the section, you will know:\n  - You have valid, working credentials\n  - You are able to load use the SDK of your choice\n\n  In the sections that follow, we will build the cloud infrastructure for a sample application using the OpenStack services.\n  ",
+    "features": {
+      "authenticate token": {
+        "data": {
+        },
+        "environment": {
+          "RAX_USERNAME": "devopsy",
+          "RAX_API_KEY": "******",
+          "RAX_REGION": "ORD",
+          "RAX_AUTH_URL": "http://identity.api.rackspacecloud.dev:9900"
+        },
+        "services": [
+          "Authenticate"
+        ],
+        "markdown": "\n  Please use the SDK to [authenticate](http://docs.rackspace.com/auth/api/v2.0/auth-client-devguide/content/POST_authenticate_v2.0_tokens_Token_Calls.html) using a username and API key.\n  ",
+        "results": {
+          "fog": {
+            "data": {
+              "data-challenge": "authenticate_token",
+              "data-sdk": "fog"
+            },
+            "environment": {
+              "RAX_USERNAME": "devopsy",
+              "RAX_API_KEY": "******",
+              "RAX_REGION": "ORD",
+              "RAX_AUTH_URL": "http://identity.api.rackspacecloud.dev:9900"
+            },
+            "services": [
+              "Authenticate"
+            ],
+            "state": "failed",
+            "runtime": 3.673869
+          }
+        }
+      },
+      "all connections": {
+        "data": {
+        },
+        "environment": {
+          "RAX_USERNAME": "devopsy",
+          "RAX_API_KEY": "******",
+          "RAX_REGION": "ORD",
+          "RAX_AUTH_URL": "http://identity.api.rackspacecloud.dev:9900"
+        },
+        "services": [
+
+        ],
+        "markdown": "\n  Let's make a connection to each of the available OpenStack products\n  ",
+        "results": {
+          "fog": {
+            "data": {
+              "data-challenge": "all_connections",
+              "data-sdk": "fog"
+            },
+            "environment": {
+              "RAX_USERNAME": "devopsy",
+              "RAX_API_KEY": "******",
+              "RAX_REGION": "ORD",
+              "RAX_AUTH_URL": "http://identity.api.rackspacecloud.dev:9900"
+            },
+            "services": [
+
+            ],
+            "state": "failed",
+            "runtime": 23.809101
+          }
+        }
+      }
+    }
+  },
+  "Cloud Files": {
+    "data": {
+    },
+    "environment": null,
+    "services": null,
+    "markdown": "\n  In this section we'll cover Cloud Files.  We'll start with a few simple services.  In the final example for this section, we will upload static assets to a CDN-enabled Cloud Files container that will be used by our sample application.\n  ",
+    "features": {
+      "List Containers": {
+        "data": {
+        },
+        "environment": {
+          "RAX_USERNAME": "devopsy",
+          "RAX_API_KEY": "******",
+          "RAX_REGION": "ORD",
+          "RAX_AUTH_URL": "http://identity.api.rackspacecloud.dev:9900",
+          "TEST_DIRECTORY": "asdf",
+          "TEST_FILE": "asdf"
+        },
+        "services": [
+
+        ],
+        "markdown": "\n  Use the SDK to list your existing cloud Cloud Files containers.\n  ",
+        "results": {
+          "fog": {
+            "data": {
+              "data-challenge": "list_containers",
+              "data-sdk": "fog"
+            },
+            "environment": {
+              "RAX_USERNAME": "devopsy",
+              "RAX_API_KEY": "******",
+              "RAX_REGION": "ORD",
+              "RAX_AUTH_URL": "http://identity.api.rackspacecloud.dev:9900",
+              "TEST_DIRECTORY": "asdf",
+              "TEST_FILE": "asdf"
+            },
+            "services": [
+
+            ],
+            "state": "failed",
+            "runtime": 3.752753
+          }
+        }
+      },
+      "Get object metadata": {
+        "data": {
+        },
+        "environment": {
+          "RAX_USERNAME": "devopsy",
+          "RAX_API_KEY": "******",
+          "RAX_REGION": "ORD",
+          "RAX_AUTH_URL": "http://identity.api.rackspacecloud.dev:9900",
+          "TEST_DIRECTORY": "asdf",
+          "TEST_FILE": "asdf"
+        },
+        "services": [
+
+        ],
+        "markdown": "\n  Now, use the SDK to retrieve a file from Cloud Files.\n  ",
+        "results": {
+          "fog": {
+            "data": {
+              "data-challenge": "get_object_metadata",
+              "data-sdk": "fog"
+            },
+            "environment": {
+              "RAX_USERNAME": "devopsy",
+              "RAX_API_KEY": "******",
+              "RAX_REGION": "ORD",
+              "RAX_AUTH_URL": "http://identity.api.rackspacecloud.dev:9900",
+              "TEST_DIRECTORY": "asdf",
+              "TEST_FILE": "asdf"
+            },
+            "services": [
+
+            ],
+            "state": "passed",
+            "runtime": 3.602085
+          }
+        }
+      },
+      "Upload a single file": {
+        "data": {
+        },
+        "environment": {
+          "RAX_USERNAME": "devopsy",
+          "RAX_API_KEY": "******",
+          "RAX_REGION": "ORD",
+          "RAX_AUTH_URL": "http://identity.api.rackspacecloud.dev:9900",
+          "TEST_DIRECTORY": "asdf",
+          "TEST_FILE": "asdf"
+        },
+        "services": [
+
+        ],
+        "markdown": "\n  Now, let's upload logo.png to Cloud Files so we can start building a website.\n  ",
+        "results": {
+          "fog": {
+            "data": {
+              "data-challenge": "upload_a_single_file",
+              "data-sdk": "fog"
+            },
+            "environment": {
+              "RAX_USERNAME": "devopsy",
+              "RAX_API_KEY": "******",
+              "RAX_REGION": "ORD",
+              "RAX_AUTH_URL": "http://identity.api.rackspacecloud.dev:9900",
+              "TEST_DIRECTORY": "asdf",
+              "TEST_FILE": "asdf"
+            },
+            "services": [
+
+            ],
+            "state": "pending",
+            "runtime": 0.01441
+          }
+        }
+      },
+      "Upload static assets": {
+        "data": {
+        },
+        "environment": {
+          "RAX_USERNAME": "devopsy",
+          "RAX_API_KEY": "******",
+          "RAX_REGION": "ORD",
+          "RAX_AUTH_URL": "http://identity.api.rackspacecloud.dev:9900",
+          "TEST_DIRECTORY": "asdf",
+          "TEST_FILE": "asdf"
+        },
+        "services": [
+
+        ],
+        "markdown": "\n  Let's enable the CDN for our assets.\n  ",
+        "results": {
+          "fog": {
+            "data": {
+              "data-challenge": "upload_static_assets",
+              "data-sdk": "fog"
+            },
+            "environment": {
+              "RAX_USERNAME": "devopsy",
+              "RAX_API_KEY": "******",
+              "RAX_REGION": "ORD",
+              "RAX_AUTH_URL": "http://identity.api.rackspacecloud.dev:9900",
+              "TEST_DIRECTORY": "asdf",
+              "TEST_FILE": "asdf"
+            },
+            "services": [
+
+            ],
+            "state": "pending",
+            "runtime": 0.019975
+          }
+        }
+      }
+    }
+  },
+  "Cloud Servers": {
+    "data": {
+    },
+    "environment": null,
+    "services": null,
+    "markdown": "\n  \n  Scenarios using [Next Generation Cloud Servers API V2](http://docs.rackspace.com/servers/api/v2/cs-devguide/content/ch_preface.html).\n  ",
+    "features": {
+      "Create Server": {
+        "data": {
+        },
+        "environment": {
+          "RAX_USERNAME": "devopsy",
+          "RAX_API_KEY": "******",
+          "RAX_REGION": "DFW",
+          "RAX_AUTH_URL": "http://identity.api.rackspacecloud.dev:9900",
+          "SERVER1_IMAGE": "f70ed7c7-b42e-4d77-83d8-40fa29825b85",
+          "SERVER1_FLAVOR": "performance1-1"
+        },
+        "services": [
+
+        ],
+        "markdown": "\n    [Create a Server](http://docs.rackspace.com/servers/api/v2/cs-devguide/content/CreateServers.html)\n    using the image and flavor, and region specified in the environment.\n    ",
+        "results": {
+          "fog": {
+            "data": {
+              "data-challenge": "create_server",
+              "data-sdk": "fog"
+            },
+            "environment": {
+              "RAX_USERNAME": "devopsy",
+              "RAX_API_KEY": "******",
+              "RAX_REGION": "DFW",
+              "RAX_AUTH_URL": "http://identity.api.rackspacecloud.dev:9900",
+              "SERVER1_IMAGE": "f70ed7c7-b42e-4d77-83d8-40fa29825b85",
+              "SERVER1_FLAVOR": "performance1-1"
+            },
+            "services": [
+
+            ],
+            "state": "passed",
+            "runtime": 60.613561
+          }
+        }
+      }
+    }
+  },
+  "Provision scalable webapp architecture": {
+    "data": {
+    },
+    "environment": null,
+    "services": null,
+    "markdown": "\n  This challenge will make sure you can provision all the resources used by the [reference web application architecture](http://www.rackspace.com/knowledge_center/article/rackspace-open-cloud-reference-architecture#Webapp)\n  ",
+    "features": {
+      "Provision scalable webapp": {
+        "data": {
+        },
+        "environment": {
+          "RAX_USERNAME": "devopsy",
+          "RAX_API_KEY": "******",
+          "RAX_REGION": "DFW",
+          "RAX_AUTH_URL": "http://identity.api.rackspacecloud.dev:9900",
+          "CONTAINER_NAME": "sample_site",
+          "TEST_DIRECTORY": "/Users/Thoughtworker/repos/rackspace/polytrix/spec/provision_reference_webapp/fixtures",
+          "SERVER1_IMAGE": "f70ed7c7-b42e-4d77-83d8-40fa29825b85",
+          "SERVER1_FLAVOR": "performance1-1"
+        },
+        "services": [
+
+        ],
+        "markdown": "\n  Use the SDK to provision all the resources necessary for the webapp architecture.\n  ",
+        "results": {
+          "fog": {
+            "data": {
+              "data-challenge": "provision_scalable_webapp",
+              "data-sdk": "fog"
+            },
+            "environment": {
+              "RAX_USERNAME": "devopsy",
+              "RAX_API_KEY": "******",
+              "RAX_REGION": "DFW",
+              "RAX_AUTH_URL": "http://identity.api.rackspacecloud.dev:9900",
+              "CONTAINER_NAME": "sample_site",
+              "TEST_DIRECTORY": "/Users/Thoughtworker/repos/rackspace/polytrix/spec/provision_reference_webapp/fixtures",
+              "SERVER1_IMAGE": "f70ed7c7-b42e-4d77-83d8-40fa29825b85",
+              "SERVER1_FLAVOR": "performance1-1"
+            },
+            "services": [
+
+            ],
+            "state": "passed",
+            "runtime": 66.195015
+          }
+        }
+      }
+    }
+  },
+  "Deploy a static website": {
+    "data": {
+    },
+    "environment": null,
+    "services": null,
+    "markdown": "\n  This change will make sure you can deploy a static website to Cloud Files and serve it via a CDN.\n  ",
+    "features": {
+      "Create a Container": {
+        "data": {
+        },
+        "environment": {
+          "RAX_USERNAME": "devopsy",
+          "RAX_API_KEY": "******",
+          "RAX_REGION": "ORD",
+          "RAX_AUTH_URL": "http://identity.api.rackspacecloud.dev:9900",
+          "CONTAINER_NAME": "sample_site",
+          "TEST_DIRECTORY": "/Users/Thoughtworker/repos/rackspace/polytrix/spec/static_site/fixtures"
+        },
+        "services": [
+
+        ],
+        "markdown": "\n  Use the SDK to create a container to deploy the site.\n  ",
+        "results": {
+          "fog": {
+            "data": {
+              "data-challenge": "create_a_container",
+              "data-sdk": "fog"
+            },
+            "environment": {
+              "RAX_USERNAME": "devopsy",
+              "RAX_API_KEY": "******",
+              "RAX_REGION": "ORD",
+              "RAX_AUTH_URL": "http://identity.api.rackspacecloud.dev:9900",
+              "CONTAINER_NAME": "sample_site",
+              "TEST_DIRECTORY": "/Users/Thoughtworker/repos/rackspace/polytrix/spec/static_site/fixtures"
+            },
+            "services": [
+
+            ],
+            "state": "passed",
+            "runtime": 4.999136
+          }
+        }
+      },
+      "Upload Folder": {
+        "data": {
+        },
+        "environment": {
+          "RAX_USERNAME": "devopsy",
+          "RAX_API_KEY": "******",
+          "RAX_REGION": "ORD",
+          "RAX_AUTH_URL": "http://identity.api.rackspacecloud.dev:9900",
+          "CONTAINER_NAME": "sample_site",
+          "TEST_DIRECTORY": "/Users/Thoughtworker/repos/rackspace/polytrix/spec/static_site/fixtures"
+        },
+        "services": [
+
+        ],
+        "markdown": "\n  Use the SDK to create a container to deploy the site.\n  ",
+        "results": {
+          "fog": {
+            "data": {
+              "data-challenge": "upload_folder",
+              "data-sdk": "fog"
+            },
+            "environment": {
+              "RAX_USERNAME": "devopsy",
+              "RAX_API_KEY": "******",
+              "RAX_REGION": "ORD",
+              "RAX_AUTH_URL": "http://identity.api.rackspacecloud.dev:9900",
+              "CONTAINER_NAME": "sample_site",
+              "TEST_DIRECTORY": "/Users/Thoughtworker/repos/rackspace/polytrix/spec/static_site/fixtures"
+            },
+            "services": [
+
+            ],
+            "state": "passed",
+            "runtime": 4.431048
+          }
+        }
+      },
+      "CDN Enable Container": {
+        "data": {
+        },
+        "environment": {
+          "RAX_USERNAME": "devopsy",
+          "RAX_API_KEY": "******",
+          "RAX_REGION": "ORD",
+          "RAX_AUTH_URL": "http://identity.api.rackspacecloud.dev:9900",
+          "CONTAINER_NAME": "sample_site",
+          "TEST_DIRECTORY": "/Users/Thoughtworker/repos/rackspace/polytrix/spec/static_site/fixtures"
+        },
+        "services": [
+
+        ],
+        "markdown": "\n  Use the SDK to create a container to deploy the site.\n  ",
+        "results": {
+          "fog": {
+            "data": {
+              "data-challenge": "cdn_enable_container",
+              "data-sdk": "fog"
+            },
+            "environment": {
+              "RAX_USERNAME": "devopsy",
+              "RAX_API_KEY": "******",
+              "RAX_REGION": "ORD",
+              "RAX_AUTH_URL": "http://identity.api.rackspacecloud.dev:9900",
+              "CONTAINER_NAME": "sample_site",
+              "TEST_DIRECTORY": "/Users/Thoughtworker/repos/rackspace/polytrix/spec/static_site/fixtures"
+            },
+            "services": [
+
+            ],
+            "state": "passed",
+            "runtime": 4.949843
+          }
+        }
+      },
+      "Sync change": {
+        "data": {
+        },
+        "environment": {
+          "RAX_USERNAME": "devopsy",
+          "RAX_API_KEY": "******",
+          "RAX_REGION": "ORD",
+          "RAX_AUTH_URL": "http://identity.api.rackspacecloud.dev:9900",
+          "CONTAINER_NAME": "sample_site",
+          "TEST_DIRECTORY": "/Users/Thoughtworker/repos/rackspace/polytrix/spec/static_site/fixtures"
+        },
+        "services": [
+
+        ],
+        "markdown": "\n  This test will update the site with a small change.  Ideally you should upload the changed file but avoid re-uploading\n  large files.\n  ",
+        "results": {
+          "fog": {
+            "data": {
+              "data-challenge": "sync_change",
+              "data-sdk": "fog"
+            },
+            "environment": {
+              "RAX_USERNAME": "devopsy",
+              "RAX_API_KEY": "******",
+              "RAX_REGION": "ORD",
+              "RAX_AUTH_URL": "http://identity.api.rackspacecloud.dev:9900",
+              "CONTAINER_NAME": "sample_site",
+              "TEST_DIRECTORY": "/Users/Thoughtworker/repos/rackspace/polytrix/spec/static_site/fixtures"
+            },
+            "services": [
+
+            ],
+            "state": "pending",
+            "runtime": 0.012874
+          }
+        }
+      }
+    }
+  }
+}
