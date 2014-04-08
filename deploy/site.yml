@@ -1,3 +1,3 @@
 ---
-- include: web.yml
-- include: elasticsearch.yml
+- include: provision.yml
+- include: configure.yml

@@ -1,0 +1,11 @@
+---
+- name: Create user for pushing static site
+  user: name=publisher comment="Site Publisher" state=present
+  sudo: true
+
+- name: Add SSH public key to authorized_keys for publisher user
+  authorized_key: user=publisher key="{{ lookup('file', '.id_rsa.pub') }}"
+
+- name: Make publisher user owner of docroot directory
+  file: path={{ docroot }} owner=publisher recurse=yes state=directory
+  sudo: true

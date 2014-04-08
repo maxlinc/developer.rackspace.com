@@ -1,0 +1,110 @@
+# Provision 2 web servers in each region, IAD and DFW
+# Provision 1 load balancer in DFW
+# Connect load balancer to 4 web server nodes
+---
+- name: Provision environment
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  tasks:
+
+    - name: Provision web load balancer in DFW
+      local_action:
+        module: rax_clb
+        credentials: ~/.rackspace_cloud_credentials
+        name: weblb
+        port: 80
+        protocol: HTTP
+        algorithm: ROUND_ROBIN
+        type: PUBLIC
+        timeout: 30
+        region: DFW
+        wait: yes
+        state: present
+      register: clb
+
+    - name: Provision 2 web servers in IAD
+      local_action:
+        module: rax
+        credentials: ~/.rackspace_cloud_credentials
+        name: webserver_iad_%01d
+        flavor: performance1-1
+        image: ubuntu-1204-lts-precise-pangolin
+        networks:
+          - public
+          - private
+        region: IAD
+        state: present
+        count: 2
+        exact_count: yes
+        group: webservers
+        wait: yes
+      register: rax
+
+    - name: Add IAD servers to load balancer
+      local_action:
+        module: rax_clb_nodes
+        credentials: ~/.rackspace_cloud_credentials
+        load_balancer_id: "{{ clb.balancer.id }}"
+        address: "{{ item.rax_networks.public|first }}"
+        port: 80
+        condition: enabled
+        type: primary
+        wait: yes
+        region: DFW
+      with_items: rax.success
+      when: rax.action == 'create'
+
+    - name: Add IAD servers to webserver host group
+      local_action:
+        module: add_host
+        hostname: "{{ item.name }}"
+        ansible_ssh_host: "{{ item.rax_accessipv4 }}"
+        ansible_ssh_pass: "{{ item.rax_adminpass }}"
+        ansible_ssh_user: root
+        groupname: webservers
+      with_items: rax.success
+      when: rax.action == 'create'
+
+    - name: Provision 2 web servers in DFW
+      local_action:
+        module: rax
+        credentials: ~/.rackspace_cloud_credentials
+        name: webserver_dfw_%01d
+        flavor: performance1-1
+        image: ubuntu-1204-lts-precise-pangolin
+        networks:
+          - public
+          - private
+        region: DFW
+        state: present
+        count: 2
+        exact_count: yes
+        group: webservers
+        wait: yes
+      register: rax      
+
+    - name: Add DFW servers to load balancer
+      local_action:
+        module: rax_clb_nodes
+        credentials: ~/.rackspace_cloud_credentials
+        load_balancer_id: "{{ clb.balancer.id }}"
+        address: "{{ item.rax_networks.private|first }}"
+        port: 80
+        condition: enabled
+        type: primary
+        wait: yes
+        region: DFW
+      with_items: rax.success
+      when: rax.action == 'create'
+
+    - name: Add DFW servers to webserver host group
+      local_action:
+        module: add_host
+        hostname: "{{ item.name }}"
+        ansible_ssh_host: "{{ item.rax_accessipv4 }}"
+        ansible_ssh_pass: "{{ item.rax_adminpass }}"
+        ansible_ssh_user: root
+        groupname: webservers
+      with_items: rax.success
+      when: rax.action == 'create'
