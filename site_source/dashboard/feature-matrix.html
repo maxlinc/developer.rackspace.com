@@ -1,0 +1,81 @@
+---
+layout: nil
+title: Feature Matrix
+
+results_url: 'data.json'
+---
+<!-- Putting these here for now, because we don't have an asset pipeline hooked up -->
+<script src="http://code.angularjs.org/1.2.9/angular.js"></script>
+<script src="http://code.angularjs.org/1.2.9/angular-resource.js"></script>
+<script src="http://bazalt-cms.com/assets/ng-table/0.3.1/ng-table.js"></script>
+<link href="http://bazalt-cms.com/assets/ng-table/0.3.1/ng-table.css" rel="stylesheet">
+<!-- FontAwesome... just for chevrons -->
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+<link href="/css/dashboard.css" rel="stylesheet">
+<script type="text/javascript">
+  var app = angular.module('main', ['ngTable', 'ngResource']).controller('DemoCtrl', function ($scope, $timeout, $resource, $filter, ngTableParams) {
+    var Api = $resource('{{ page.results_url }}');
+
+    $scope.tableParams = new ngTableParams({
+        page: 1, // show first page
+        count: -1 // count per page
+      }, {
+        groupBy: 'product',
+        getData: function ($defer, params) {
+          Api.get(params.url(), function (data) {
+            $timeout(function() {
+              var orderedData = params.sorting() ?
+                $filter('orderBy')(data.results, $scope.tableParams.orderBy()) :
+                data;
+
+              params.total(data.results.length);
+              $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+            }, 500)
+          });
+        }
+      });
+  });
+  // Change default syntax so it doesn't conflict w/ liquid, makes it easier to embed w/in jekyll
+  app.config([
+    '$interpolateProvider', function($interpolateProvider) {
+      return $interpolateProvider.startSymbol('[[').endSymbol(']]');
+    }
+  ]);
+</script>
+<div ng-app="main" ng-controller="DemoCtrl" class="datagrid">
+  <table class="table" ng-table="tableParams">
+    <tbody ng-repeat="group in $groups">
+      <tr class="ng-table-group">
+        <td colspan="[[$columns.length]]">
+          <a href="" ng-click="group.$hideRows = !group.$hideRows"><span class="fa" ng-class="{ 'fa-chevron-right': group.$hideRows, 'fa-chevron-down': !group.$hideRows }"></span><strong> [[ group.value ]] </strong></a>
+        </td>
+      </tr>
+      <tr ng-hide="group.$hideRows" ng-repeat="feature in group.data">
+        <td data-title="'Feature'" sortable="feature">
+          [[feature.feature]]
+        </td>
+        <td data-title="'fog'" ng-class="{'passed': feature.fog === 'passed', 'failed': feature.fog === 'failed'}" sortable="fog">
+          [[feature.fog]]
+        </td>
+        <td data-title="'gophercloud'" ng-class="{'passed': feature.gophercloud === 'passed', 'failed': feature.gophercloud === 'failed'}" sortable="gophercloud">
+          [[feature.gophercloud]]
+        </td>
+        <td data-title="'jclouds'" ng-class="{'passed': feature.jclouds === 'passed', 'failed': feature.jclouds === 'failed'}" sortable="jclouds">
+          [[feature.jclouds]]
+        </td>
+        <td data-title="'openstack.net'" ng-class="{'passed': feature.openstack_net === 'passed', 'failed': feature.openstack_net === 'failed'}" sortable="openstack.net">
+          [[feature.openstack_net]]
+        </td>
+        <td data-title="'php-opencloud'" ng-class="{'passed': feature.php_opencloud === 'passed', 'failed': feature.php_opencloud === 'failed'}" sortable="php-opencloud">
+          [[feature.php_opencloud]]
+        </td>
+        <td data-title="'pkgcloud'" ng-class="{'passed': feature.pkgcloud === 'passed', 'failed': feature.pkgcloud === 'failed'}" sortable="pkgcloud">
+          [[feature.pkgcloud]]
+        </td>
+        <td data-title="'pyrax'" ng-class="{'passed': feature.pyrax === 'passed', 'failed': feature.pyrax === 'failed'}" sortable="pyrax">
+          [[feature.pyrax]]
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
