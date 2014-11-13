@@ -1,0 +1,29 @@
+---
+layout: sdk-page
+title: SDKs Feature Comparison
+---
+
+<table>
+  <thead>
+    <tr>
+      <td>Product</td>
+      <td>Feature</td>
+    {% for sdk_hash in site.data.sdks %}
+    {% assign sdk = sdk_hash[1] %}
+      <td><a href={{sdk.homepage}}>{{ sdk.name }}</a></td>
+    {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for feature in site.data.features %}
+    <tr>
+      <td>{{ feature.Product }}</td>
+      <td>{{ feature.Feature }}</td>
+    {% for sdk_hash in site.data.sdks %}
+    {% assign sdk = sdk_hash[1] %}
+      <td>{{ feature[sdk.name] }}</td>
+    {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
