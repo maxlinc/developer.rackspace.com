@@ -1,0 +1,7 @@
+---
+name: php-opencloud
+homepage: https://github.com/rackspace/php-opencloud
+programming_language: PHP
+description: The PHP SDK for OpenStack clouds
+download_page: https://github.com/rackspace/php-opencloud/downloads
+bug_database: https://github.com/rackspace/php-opencloud/issues

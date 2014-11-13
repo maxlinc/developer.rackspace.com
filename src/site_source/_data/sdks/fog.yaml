@@ -1,0 +1,7 @@
+---
+name: fog
+homepage: https://github.com/fog/fog
+programming_language: Ruby
+description: The Ruby cloud services library.
+download_page: https://github.com/fog/fog/downloads
+bug_database: https://github.com/fog/fog/issues

@@ -1,0 +1,6 @@
+---
+name: openstack.net
+homepage: https://github.com/openstacknetsdk/openstack.net
+programming_language: C#
+description: The Microsoft .NET SDK for the Rackspace Cloud
+download_page: https://github.com/openstacknetsdk/openstack.net/downloads

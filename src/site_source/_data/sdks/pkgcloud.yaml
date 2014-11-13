@@ -1,0 +1,9 @@
+---
+name: pkgcloud
+homepage: https://github.com/pkgcloud/pkgcloud
+programming_language: JavaScript
+description: |-
+  pkgcloud is a standard library for node.js that abstracts away differences
+  among multiple cloud providers.
+download_page: https://github.com/pkgcloud/pkgcloud/downloads
+bug_database: https://github.com/pkgcloud/pkgcloud/issues
